@@ -18,7 +18,6 @@ void draw(Color c) {
     float curr_x = STARTING_PT.x;
     for(int i = 0; i < len(values); i++) {
         int height = values[i].val * BASE_HEIGHT;
-        printf("val: %d, offset: %f\n", values[i].val, values[i].ofst);
         DrawRectangle(curr_x + values[i].ofst, STARTING_PT.y - height, WIDTH, height, c);
         curr_x += WIDTH;
     }
@@ -27,28 +26,24 @@ void draw(Color c) {
 void animate(int small, int large) {
     struct block* b1 = values + small;
     struct block* b2 = values + large;
-    for(int i = 0; i < 10; i++) {
+    if(b1->ofst != WIDTH * (large-small)) {
         b1->ofst += 1.0f;
-        b2->ofst -= 1.0f;
-        draw(BLUE);
+        b2->ofst -= 1.0f;     
+    } else {
+        values[small] = (struct block){4, 0.0f};
+        values[large] = (struct block){2, 0.0f};
     }
-
-    b1->ofst = 0.0f;
-    b2->ofst = 0.0f;
-
-    values[small] = *b2;
-    values[large] = *b1;
-
+    draw(BLUE);
 }
 
 int main(void) {
-    SetTargetFPS(10);
+    SetTargetFPS(30);
     SetTraceLogLevel(LOG_WARNING);
     InitWindow(500, 500, "DSAV");
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
-        animate(1, 2);
+        animate(1, 4);
         EndDrawing();
     }
     CloseWindow();
