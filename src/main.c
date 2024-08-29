@@ -23,15 +23,17 @@ void draw(Color c) {
     }
 }
 
-void animate(int small, int large) {
-    struct block* b1 = values + small;
-    struct block* b2 = values + large;
-    if(b1->ofst != WIDTH * (large-small)) {
-        b1->ofst += 1.0f;
-        b2->ofst -= 1.0f;     
+void animate(int left, int right) {
+    struct block* b1 = values + left;
+    struct block* b2 = values + right;
+    int scale = right-left;
+    if(b1->ofst != WIDTH * scale) {
+        b1->ofst += 1.0f * scale;
+        b2->ofst -= 1.0f * scale;     
     } else {
-        values[small] = (struct block){4, 0.0f};
-        values[large] = (struct block){2, 0.0f};
+        int temp = b1->val;
+        values[left] = (struct block){b2->val, 0.0f};
+        values[right] = (struct block){temp, 0.0f};
     }
     draw(BLUE);
 }
