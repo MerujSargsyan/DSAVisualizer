@@ -10,9 +10,18 @@ struct block {
     float ofst;
 };
 
+typedef struct process {
+    int lefti;
+    int righti;
+    bool done;
+} process;
+
 const int WIDTH = 100; 
 const int BASE_HEIGHT = 50; 
+
 struct block values[] = {{.val = 1, .ofst = 0.0f}, {.val = 2, .ofst = 0.0f}, {.val = 5, .ofst = 0.0f}, {.val = 3, .ofst = 0.0f}, {.val = 4, .ofst = 0.0f}};
+process order[] = {{.lefti = 1, .righti = 2, .done = false}, {.lefti = 2, .righti = 3, .done = false}, {.lefti = 3, .righti = 4, .done = false}, {.lefti = 0, .righti = 4, .done = false}};
+int curr_process = 0;
 
 const Vector2 STARTING_PT = {.x = 0, .y = 500};
 
@@ -25,25 +34,38 @@ void draw(Color c) {
     }
 }
 
-void animate(int left, int right) {
+bool animate(int left, int right) {
     struct block* b1 = values + left;
     struct block* b2 = values + right;
     int scale = right-left;
     if(b1->ofst != WIDTH * scale) {
         b1->ofst += 1.0f * scale;
         b2->ofst -= 1.0f * scale;     
+        return false;
     } else {
         int temp = b1->val;
         values[left] = (struct block){b2->val, 0.0f};
         values[right] = (struct block){temp, 0.0f};
-        animating = !animating;
+        return true;
     }
-    draw(BLUE);
 }
 
 void take_input() {
     if(IsKeyPressed(KEY_SPACE)) {
         animating = !animating;
+        if(curr_process >= len(order)) curr_process = 0;
+    }
+}
+
+void do_process() {
+    if(curr_process >= len(order)) return;
+    process current = order[curr_process];
+    if(animating && !current.done) {
+        current.done = animate(current.lefti, current.righti);
+    }
+
+    if(current.done) {
+        curr_process++;
     }
 }
 
@@ -55,7 +77,7 @@ int main(void) {
         BeginDrawing();
         ClearBackground(BLACK);
         take_input();
-        if(animating) animate(1, 4);
+        do_process();
         draw(BLUE);
         EndDrawing();
     }
