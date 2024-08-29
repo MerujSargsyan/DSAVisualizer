@@ -1,86 +1,98 @@
 #include <raylib.h>
-#include <stdio.h>
-
-#define len(A) (int)(sizeof((A)) / sizeof((A)[0]))
+#include <animlib.h>
 
 bool animating = true;
 
-struct block {
-    int val;
-    float ofst;
-};
+vector blocks;
+vector processes;
 
-typedef struct process {
-    int lefti;
-    int righti;
-    bool done;
-} process;
+int nums[] = {1, 2, 3, 4, 5};
 
-const int WIDTH = 50; 
+const int WIDTH = 100; 
 const int BASE_HEIGHT = 50; 
 
-struct block values[] = {{.val = 1, .ofst = 0.0f}, {.val = 2, .ofst = 0.0f}, {.val = 5, .ofst = 0.0f}, {.val = 3, .ofst = 0.0f}, {.val = 4, .ofst = 0.0f},{.val = 9, .ofst = 0.0f} };
-process order[] = {{.lefti = 1, .righti = 2, .done = false}, {.lefti = 2, .righti = 3, .done = false}, {.lefti = 3, .righti = 4, .done = false}, {.lefti = 0, .righti = 4, .done = false}};
-int curr_process = 0;
-
-const Vector2 STARTING_PT = {.x = len(values)*WIDTH/2, .y = 500};
+const Vector2 STARTING_PT = {.x = 0, .y = 500};
 
 void draw(Color c) {
     float curr_x = STARTING_PT.x;
-    for(int i = 0; i < len(values); i++) {
-        int height = values[i].val * BASE_HEIGHT;
-        DrawRectangle(curr_x + values[i].ofst, STARTING_PT.y - height, WIDTH, height, c);
+    for(int i = 0; i < blocks.size; i++) {
+        block b = *(block *)blocks.arr[i];
+        int height = b.val * BASE_HEIGHT;
+        DrawRectangle(curr_x + b.offset, STARTING_PT.y - height, WIDTH, height, c);
         curr_x += WIDTH;
     }
 }
 
 bool animate(int left, int right) {
-    struct block* b1 = values + left;
-    struct block* b2 = values + right;
+    block* b1 = (block *)blocks.arr[left];
+    block* b2 = (block *)blocks.arr[right];
     int scale = right-left;
-    if(b1->ofst != WIDTH * scale) {
-        b1->ofst += 1.0f * scale;
-        b2->ofst -= 1.0f * scale;     
+    if(b1->offset != WIDTH * scale) {
+        b1->offset += 1.0f * scale;
+        b2->offset -= 1.0f * scale;     
         return false;
     } else {
-        int temp = b1->val;
-        values[left] = (struct block){b2->val, 0.0f};
-        values[right] = (struct block){temp, 0.0f};
+        int temp = nums[left];
+        nums[left] = nums[right];
+        nums[right] = temp;
+
+        // impelement swap in vector
+        block* temp2 = (block *)blocks.arr[left];
+        blocks.arr[left] = blocks.arr[right];
+        blocks.arr[right] = temp2;
         return true;
     }
 }
 
-void take_input() {
-    if(IsKeyPressed(KEY_SPACE)) {
-        animating = !animating;
-        if(curr_process >= len(order)) curr_process = 0;
+void init_blocks() {
+    for(int i = 0; i < len(nums); i++) {
+        block b = {.val = nums[i], .offset = 0.0f};
+        vector_add(&blocks, &b);
+        b = *(block *)blocks.arr[i];
+        printf("val: %d, offset: %f\n", b.val, b.offset);
     }
 }
 
+void add_processes() {
+    // write custom processes here
+    process p = {.lefti = 0, .righti = 1, .done = false};
+    vector_add(&processes, &p);
+}
+
 void do_process() {
-    if(curr_process >= len(order)) return;
-    process current = order[curr_process];
+    if(processes.size == 0) return;
+
+    process current = *(process *)processes.arr[0]; // need a get function
     if(animating && !current.done) {
-        current.done = animate(current.lefti, current.righti);
+        current.done = animate(0, current.righti);
     }
 
     if(current.done) {
-        curr_process++;
+        vector_pop(&processes);
     }
 }
 
 int main(void) {
     SetTargetFPS(30);
     SetTraceLogLevel(LOG_WARNING);
+
+    blocks = init_vector(5);
+    processes = init_vector(5);
+
+    init_blocks();
+    add_processes();
+
     InitWindow(500, 500, "DSAV");
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
-        take_input();
-        do_process();
+        //do_process();
         draw(BLUE);
         EndDrawing();
     }
+
     CloseWindow();
+    free_vector(&blocks);
+    free_vector(&processes);
     return 0;
 }
