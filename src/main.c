@@ -3,6 +3,8 @@
 
 #define len(A) (int)(sizeof((A)) / sizeof((A)[0]))
 
+bool animating = true;
+
 struct block {
     int val;
     float ofst;
@@ -34,8 +36,15 @@ void animate(int left, int right) {
         int temp = b1->val;
         values[left] = (struct block){b2->val, 0.0f};
         values[right] = (struct block){temp, 0.0f};
+        animating = !animating;
     }
     draw(BLUE);
+}
+
+void take_input() {
+    if(IsKeyPressed(KEY_SPACE)) {
+        animating = !animating;
+    }
 }
 
 int main(void) {
@@ -45,7 +54,9 @@ int main(void) {
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
-        animate(1, 4);
+        take_input();
+        if(animating) animate(1, 4);
+        draw(BLUE);
         EndDrawing();
     }
     CloseWindow();
