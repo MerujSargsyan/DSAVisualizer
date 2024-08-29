@@ -16,14 +16,14 @@ typedef struct process {
     bool done;
 } process;
 
-const int WIDTH = 100; 
+const int WIDTH = 50; 
 const int BASE_HEIGHT = 50; 
 
-struct block values[] = {{.val = 1, .ofst = 0.0f}, {.val = 2, .ofst = 0.0f}, {.val = 5, .ofst = 0.0f}, {.val = 3, .ofst = 0.0f}, {.val = 4, .ofst = 0.0f}};
+struct block values[] = {{.val = 1, .ofst = 0.0f}, {.val = 2, .ofst = 0.0f}, {.val = 5, .ofst = 0.0f}, {.val = 3, .ofst = 0.0f}, {.val = 4, .ofst = 0.0f},{.val = 9, .ofst = 0.0f} };
 process order[] = {{.lefti = 1, .righti = 2, .done = false}, {.lefti = 2, .righti = 3, .done = false}, {.lefti = 3, .righti = 4, .done = false}, {.lefti = 0, .righti = 4, .done = false}};
 int curr_process = 0;
 
-const Vector2 STARTING_PT = {.x = 0, .y = 500};
+const Vector2 STARTING_PT = {.x = len(values)*WIDTH/2, .y = 500};
 
 void draw(Color c) {
     float curr_x = STARTING_PT.x;
