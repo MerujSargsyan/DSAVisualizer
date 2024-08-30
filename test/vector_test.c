@@ -26,17 +26,9 @@ void init_blocks() {
 }
 
 void swap_blocks() {
-    block* b1 = (block *)blocks.arr[0];
-    block* b2 = (block *)blocks.arr[1];
     print_blocks();
 
-    block* temp = MY_ALLOC(sizeof(block));
-    temp->val = b1->val;
-    temp->offset= b1->offset;
-
-    MY_FREE(b1); // need to write a swap function
-    blocks.arr[0] = b2;
-    blocks.arr[1] = temp;
+    vector_swap(&blocks, 0, 1);
     print_blocks();
 }
 

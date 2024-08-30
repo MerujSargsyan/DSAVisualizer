@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 #endif
 
@@ -43,3 +44,4 @@ vector init_vector(int capacity);
 void free_vector(vector* vect); 
 void vector_add(vector* vect, void *element);
 void* vector_pop(vector* vect);
+void vector_swap(vector* vect, int i1, int i2);

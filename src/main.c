@@ -36,10 +36,7 @@ bool animate(int left, int right) {
         nums[left] = nums[right];
         nums[right] = temp;
 
-        // impelement swap in vector
-        block* temp2 = (block *)blocks.arr[left];
-        blocks.arr[left] = blocks.arr[right];
-        blocks.arr[right] = temp2;
+        //vector_swap(&blocks, left, right); messes up drawing
         return true;
     }
 }
@@ -55,16 +52,19 @@ void init_blocks() {
 
 void add_processes() {
     // write custom processes here
-    process p = {.lefti = 0, .righti = 1, .done = false};
-    vector_add(&processes, &p);
+    process* p = MY_ALLOC(sizeof(process));
+    p->lefti = 0;
+    p->righti= 1;
+    p->done = false;
+    vector_add(&processes, p);
 }
 
 void do_process() {
     if(processes.size == 0) return;
 
-    process current = *(process *)processes.arr[0]; // need a get function
+    process current = *(process *)processes.arr[0];
     if(animating && !current.done) {
-        current.done = animate(0, current.righti);
+        current.done = animate(current.lefti, current.righti);
     }
 
     if(current.done) {
