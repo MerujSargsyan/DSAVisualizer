@@ -46,10 +46,10 @@ bool animate(int left, int right) {
 
 void init_blocks() {
     for(int i = 0; i < len(nums); i++) {
-        block b = {.val = nums[i], .offset = 0.0f};
-        vector_add(&blocks, &b);
-        b = *(block *)blocks.arr[i];
-        printf("val: %d, offset: %f\n", b.val, b.offset);
+        block* b = MY_ALLOC(sizeof(block));
+        b->val = nums[i];
+        b->offset = 0.0f;
+        vector_add(&blocks, b);
     }
 }
 
@@ -86,7 +86,7 @@ int main(void) {
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
-        //do_process();
+        do_process();
         draw(BLUE);
         EndDrawing();
     }
