@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 #endif
 
@@ -28,7 +29,7 @@ typedef struct block {
 
 typedef struct process {
     int lefti;
-    int irhgti;
+    int righti;
     bool done;
 } process;
 
@@ -39,7 +40,8 @@ typedef struct vector {
 } vector;
 
 // USER RESPONSIBLE FOR FREEING using free_vector
-void init_vector(vector* vect, int capacity);
+vector init_vector(int capacity);
 void free_vector(vector* vect); 
 void vector_add(vector* vect, void *element);
 void* vector_pop(vector* vect);
+void vector_swap(vector* vect, int i1, int i2);

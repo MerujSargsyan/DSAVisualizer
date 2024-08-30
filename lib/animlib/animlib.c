@@ -1,10 +1,12 @@
 #include "animlib.h"
 
 // USER RESPONSIBLE FOR FREEING using free_vector
-void init_vector(vector* vect, int capacity) {
-    vect->arr = MY_ALLOC(capacity * sizeof(void *));
-    vect->size = 0;
-    vect->capacity = capacity;
+vector init_vector(int capacity) {
+    vector vect;
+    vect.arr = MY_ALLOC(capacity * sizeof(void *));
+    vect.size = 0;
+    vect.capacity = capacity;
+    return vect;
 }
 
 void free_vector(vector* vect) {
@@ -31,4 +33,14 @@ void* vector_pop(vector* vect) {
 
     vect->size--;
     return output;
+}
+
+void vector_swap(vector* vect, int i1, int i2) {
+    void* entry1 = vect->arr[i1];
+    void* entry2 = vect->arr[i2];
+    void* temp = MY_ALLOC(sizeof(void *));
+    memcpy(temp, entry1, sizeof(entry1));
+    vect->arr[i1] = entry2; 
+    vect->arr[i2] = temp;
+    MY_FREE(entry1);
 }

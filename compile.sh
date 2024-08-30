@@ -1,6 +1,6 @@
 #!/bin/bash
 git submodule update --init --recursive
-cd ./raylib/src/ && make && cd -
+cd ./lib/raylib/src/ && make && cd -
 
 CC="gcc"
 CFLAGS="-Wall -Wextra -std=c99"
