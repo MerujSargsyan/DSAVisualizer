@@ -53,8 +53,8 @@ void init_blocks() {
 void add_processes() {
     // write custom processes here
     process* p = MY_ALLOC(sizeof(process));
-    p->lefti = 0;
-    p->righti= 1;
+    p->lefti = 1;
+    p->righti= 4;
     p->done = false;
     vector_add(&processes, p);
 }
