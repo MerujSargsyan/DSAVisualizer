@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include <animlib.h>
+#include <stdio.h>
 
 bool animating = true;
 
@@ -10,8 +11,17 @@ int nums[] = {1, 2, 3, 4, 5};
 
 const int WIDTH = 100; 
 const int BASE_HEIGHT = 50; 
+const float BASE_SPEED = 2.0f;
 
 const Vector2 STARTING_PT = {.x = 0, .y = 500};
+
+void print_blocks() {
+    for(int i = 0; i < blocks.size; i++) {
+        block* b = (block *)blocks.arr[i];
+        printf("addr: %p, val: %d, offset: %f size: %d\n", b, b->val, b->offset, blocks.size);
+    }
+    printf("----------------------------------------------------\n");
+}
 
 void draw(Color c) {
     float curr_x = STARTING_PT.x;
@@ -28,15 +38,17 @@ bool animate(int left, int right) {
     block* b2 = (block *)blocks.arr[right];
     int scale = right-left;
     if(b1->offset != WIDTH * scale) {
-        b1->offset += 1.0f * scale;
-        b2->offset -= 1.0f * scale;     
+        b1->offset += BASE_SPEED * scale;
+        b2->offset -= BASE_SPEED * scale;     
         return false;
     } else {
         int temp = nums[left];
         nums[left] = nums[right];
         nums[right] = temp;
 
-        //vector_swap(&blocks, left, right); messes up drawing
+        b1->offset = 0.0f;
+        b2->offset = 0.0f;
+        vector_swap(&blocks, left, right);
         return true;
     }
 }
@@ -57,6 +69,18 @@ void add_processes() {
     p->righti= 4;
     p->done = false;
     vector_add(&processes, p);
+
+    process* p2 = MY_ALLOC(sizeof(process));
+    p2->lefti = 0;
+    p2->righti = 1;
+    p2->done = false;
+    vector_add(&processes, p2);
+
+    process* p3 = MY_ALLOC(sizeof(process));
+    p3->lefti = 3;
+    p3->righti = 4;
+    p3->done = false;
+    vector_add(&processes, p3);
 }
 
 void do_process() {

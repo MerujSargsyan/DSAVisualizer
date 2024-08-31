@@ -11,24 +11,24 @@ void print_blocks() {
     printf("----------------------------------------------------\n");
 }
 
-void init_blocks() {
-     block* b = MY_ALLOC(sizeof(block)); 
-     b->val = 1;
-     b->offset= 0.0f;
-     vector_add(&blocks, b);
-     print_blocks();
+void add_block(int val) {
+    block* b = MY_ALLOC(sizeof(block)); 
+    b->val = val;
+    b->offset= 0.0f;
+    vector_add(&blocks, b);
+    print_blocks();
+}
 
-     block* b2 = MY_ALLOC(sizeof(block));
-     b2->val = 2;
-     b2->offset = 0.0f;
-     vector_add(&blocks, b2);
-     print_blocks();
+void init_blocks() {
+    add_block(1);
+    add_block(2);
+    add_block(3);
+    add_block(4);
+    add_block(5);
 }
 
 void swap_blocks() {
-    print_blocks();
-
-    vector_swap(&blocks, 0, 1);
+    vector_swap(&blocks, 2, 3);
     print_blocks();
 }
 

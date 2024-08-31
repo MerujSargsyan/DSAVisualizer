@@ -7,7 +7,5 @@
 
 ### Current issues:
 <ul>
-    <li>vector swap funciton not working</li>
-    <li>blocks dissapear after swap</li>
-    <li>only one possible swap</li>
+    <li> no current bugs </li>
 </ul>
