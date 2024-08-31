@@ -1,14 +1,17 @@
 #include <raylib.h>
 #include <animlib.h>
 #include <stdio.h>
+
+#define DESIRED_COUNT 25
+
 bool sorted = false;
 
 vector blocks;
 vector processes;
 
-int nums[] = {4, 2, 1, 5, 9, 3, 10, 6, 8, 7};
+int* nums;
 
-const int WIDTH = 100; 
+const int WIDTH = 50; 
 const int BASE_HEIGHT = 50; 
 const float BASE_SPEED = 2.0f;
 
@@ -16,7 +19,7 @@ Vector2 STARTING_PT = {.x = 0, .y = 0};
 
 int max_num() {
     int max = 0x80000000;
-    for(int i = 0; i < len(nums); i++) {
+    for(int i = 0; i < DESIRED_COUNT; i++) {
         if(nums[i] > max) max = nums[i];
     }
     return (max < 1) ? 1: max;
@@ -57,7 +60,7 @@ bool animate(int left, int right) {
 }
 
 void init_blocks() {
-    for(int i = 0; i < len(nums); i++) {
+    for(int i = 0; i < DESIRED_COUNT; i++) {
         block* b = MY_ALLOC(sizeof(block));
         b->val = nums[i];
         b->offset = 0.0f;
@@ -90,10 +93,10 @@ void do_processes() {
 // TODO: extract sorting to different file 
 void selection_sort() {
     int sorted_len = 0;
-    while(sorted_len != len(nums)) {
+    while(sorted_len != DESIRED_COUNT) {
         int min = 0x7FFFFFFF;
         int min_idx = 0;
-        for(int i = sorted_len; i < len(nums); i++) {
+        for(int i = sorted_len; i < DESIRED_COUNT; i++) {
             if(nums[i] < min) {
                 min = nums[i];
                 min_idx = i;
@@ -117,11 +120,14 @@ int main(void) {
     blocks = init_vector(5);
     processes = init_vector(5);
 
+    nums = calloc(DESIRED_COUNT, sizeof(int));
+    generate_nums(nums, DESIRED_COUNT, 10);
+
     init_blocks();
     selection_sort();
 
-    STARTING_PT.y = max_num()*BASE_HEIGHT;
-    InitWindow(WIDTH * len(nums), STARTING_PT.y, "DSAV");
+    STARTING_PT.y = 10*BASE_HEIGHT;
+    InitWindow(WIDTH * DESIRED_COUNT, STARTING_PT.y, "DSAV");
 
     while(!WindowShouldClose()) {
         BeginDrawing();
@@ -132,6 +138,7 @@ int main(void) {
     }
 
     CloseWindow();
+    MY_FREE(nums);
     free_vector(&blocks);
     free_vector(&processes);
     return 0;
