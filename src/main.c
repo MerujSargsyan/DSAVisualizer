@@ -7,13 +7,21 @@ bool animating = true;
 vector blocks;
 vector processes;
 
-int nums[] = {1, 2, 3, 4, 5};
+int nums[] = {3, 2, 1};
 
 const int WIDTH = 100; 
 const int BASE_HEIGHT = 50; 
 const float BASE_SPEED = 2.0f;
 
 const Vector2 STARTING_PT = {.x = 0, .y = 500};
+
+int max_num() {
+    int max = 0xF0000000;
+    for(int i = 0; i < len(nums); i++) {
+        if(nums[i] > max) max = nums[i];
+    }
+    return (max < 1) ? 1: max;
+}
 
 void print_blocks() {
     for(int i = 0; i < blocks.size; i++) {
@@ -64,24 +72,13 @@ void init_blocks() {
 
 void add_processes() {
     // write custom processes here
-    process* p = MY_ALLOC(sizeof(process));
-    p->lefti = 1;
-    p->righti= 4;
-    p->done = false;
-    vector_add(&processes, p);
-
     process* p2 = MY_ALLOC(sizeof(process));
     p2->lefti = 0;
-    p2->righti = 1;
+    p2->righti = 2;
     p2->done = false;
     vector_add(&processes, p2);
-
-    process* p3 = MY_ALLOC(sizeof(process));
-    p3->lefti = 3;
-    p3->righti = 4;
-    p3->done = false;
-    vector_add(&processes, p3);
 }
+
 
 void do_process() {
     if(processes.size == 0) return;
@@ -106,7 +103,7 @@ int main(void) {
     init_blocks();
     add_processes();
 
-    InitWindow(500, 500, "DSAV");
+    InitWindow(WIDTH * len(nums), max_num()*BASE_HEIGHT, "DSAV");
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
