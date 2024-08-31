@@ -7,16 +7,16 @@ bool animating = true;
 vector blocks;
 vector processes;
 
-int nums[] = {3, 2, 1};
+int nums[] = {10, 2, 1, 5, 3, 6, 8};
 
 const int WIDTH = 100; 
 const int BASE_HEIGHT = 50; 
 const float BASE_SPEED = 2.0f;
 
-const Vector2 STARTING_PT = {.x = 0, .y = 500};
+Vector2 STARTING_PT = {.x = 0, .y = 0};
 
 int max_num() {
-    int max = 0xF0000000;
+    int max = 0x80000000;
     for(int i = 0; i < len(nums); i++) {
         if(nums[i] > max) max = nums[i];
     }
@@ -103,7 +103,8 @@ int main(void) {
     init_blocks();
     add_processes();
 
-    InitWindow(WIDTH * len(nums), max_num()*BASE_HEIGHT, "DSAV");
+    STARTING_PT.y = max_num()*BASE_HEIGHT;
+    InitWindow(WIDTH * len(nums), STARTING_PT.y, "DSAV");
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
