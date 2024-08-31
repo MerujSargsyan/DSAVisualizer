@@ -1,13 +1,12 @@
 #include <raylib.h>
 #include <animlib.h>
 #include <stdio.h>
-
-bool animating = true;
+bool sorted = false;
 
 vector blocks;
 vector processes;
 
-int nums[] = {10, 2, 1, 5, 3, 6, 8};
+int nums[] = {4, 2, 1, 5, 9, 3, 10, 6, 8, 7};
 
 const int WIDTH = 100; 
 const int BASE_HEIGHT = 50; 
@@ -50,10 +49,6 @@ bool animate(int left, int right) {
         b2->offset -= BASE_SPEED * scale;     
         return false;
     } else {
-        int temp = nums[left];
-        nums[left] = nums[right];
-        nums[right] = temp;
-
         b1->offset = 0.0f;
         b2->offset = 0.0f;
         vector_swap(&blocks, left, right);
@@ -70,27 +65,49 @@ void init_blocks() {
     }
 }
 
-void add_processes() {
+void add_process(int left, int right) {
     // write custom processes here
-    process* p2 = MY_ALLOC(sizeof(process));
-    p2->lefti = 0;
-    p2->righti = 2;
-    p2->done = false;
-    vector_add(&processes, p2);
+    process* p = MY_ALLOC(sizeof(process));
+    p->lefti = left;
+    p->righti = right;
+    p->done = false;
+    vector_add(&processes, p);
 }
 
-
-void do_process() {
+void do_processes() {
     if(processes.size == 0) return;
 
     process current = *(process *)processes.arr[0];
-    if(animating && !current.done) {
+    if(!current.done) {
         current.done = animate(current.lefti, current.righti);
     }
 
     if(current.done) {
         vector_pop(&processes);
     }
+}
+
+// TODO: extract sorting to different file 
+void selection_sort() {
+    int sorted_len = 0;
+    while(sorted_len != len(nums)) {
+        int min = 0x7FFFFFFF;
+        int min_idx = 0;
+        for(int i = sorted_len; i < len(nums); i++) {
+            if(nums[i] < min) {
+                min = nums[i];
+                min_idx = i;
+            }
+        }
+        add_process(sorted_len, min_idx);
+
+        int temp = nums[sorted_len];
+        nums[sorted_len] = min_idx;
+        nums[min_idx] = temp;
+
+        sorted_len++;
+    }
+    
 }
 
 int main(void) {
@@ -101,14 +118,15 @@ int main(void) {
     processes = init_vector(5);
 
     init_blocks();
-    add_processes();
+    selection_sort();
 
     STARTING_PT.y = max_num()*BASE_HEIGHT;
     InitWindow(WIDTH * len(nums), STARTING_PT.y, "DSAV");
+
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
-        do_process();
+        do_processes();
         draw(BLUE);
         EndDrawing();
     }
