@@ -114,7 +114,22 @@ void selection_sort() {
 
         sorted_len++;
     }
-    
+}
+
+void bubble_sort() {
+    int sorted_len = 0;
+    while(sorted_len != DESIRED_COUNT) {
+        for(int i = 0; i < DESIRED_COUNT - sorted_len - 1; i++) {
+            if(nums[i] > nums[i+1]) {
+                add_process(i, i+1);
+
+                int temp = nums[i];
+                nums[i] = nums[i+1];
+                nums[i+1] = temp;
+            }
+        }
+        sorted_len++;
+    }
 }
 
 int main(void) {
@@ -125,7 +140,7 @@ int main(void) {
     processes = init_vector(5);
 
     nums = calloc(DESIRED_COUNT, sizeof(int));
-    generate_nums(nums, DESIRED_COUNT, 10);
+    generate_nums(nums, DESIRED_COUNT, 10, false);
 
     init_blocks();
     selection_sort();

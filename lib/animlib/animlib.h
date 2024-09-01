@@ -42,4 +42,4 @@ void vector_add(vector* vect, void *element);
 void* vector_pop(vector* vect);
 void vector_swap(vector* vect, int i1, int i2);
 
-void generate_nums(int* arr, int desired_count, int max);
+void generate_nums(int* arr, int desired_count, int max, bool is_random);
