@@ -2,7 +2,7 @@
 #include <animlib.h>
 #include <stdio.h>
 
-#define DESIRED_COUNT 30 
+#define DESIRED_COUNT 10 
 
 bool sorted = false;
 
@@ -132,6 +132,19 @@ void bubble_sort() {
     }
 }
 
+void insertion_sort() {
+    for(int i = 1; i < DESIRED_COUNT; i++) {
+        int element = nums[i];
+        int j = i - 1;
+        while(j >= 0 && nums[j] > element) {
+            add_process(j, j+1);
+            int temp = nums[j+1];
+            nums[j+1] = nums[j];
+            nums[j] = temp;
+            j--;
+        }
+    }
+}
 int main(void) {
     SetTargetFPS(30);
     SetTraceLogLevel(LOG_WARNING);
@@ -143,7 +156,7 @@ int main(void) {
     generate_nums(nums, DESIRED_COUNT, 10, false);
 
     init_blocks();
-    selection_sort();
+    insertion_sort();
 
     STARTING_PT.y = 10*BASE_HEIGHT;
     InitWindow(WIDTH * DESIRED_COUNT, STARTING_PT.y, "DSAV");
