@@ -47,7 +47,9 @@ void draw(Color c) {
     }
 }
 
-bool animate(int left, int right) {
+bool animate(int i1, int i2) {
+    int right = i1 > i2 ? i1 : i2;
+    int left = i1 > i2 ? i2 : i1;
     block* b1 = (block *)blocks.arr[left];
     block* b2 = (block *)blocks.arr[right];
     int scale = right-left;
@@ -70,6 +72,12 @@ void init_blocks() {
         b->offset = 0.0f;
         vector_add(&blocks, b);
     }
+}
+
+void swap(int i1, int i2) {
+    int temp = nums[i1];
+    nums[i1] = nums[i2];
+    nums[i2] = temp;
 }
 
 void add_process(int left, int right) {
@@ -107,10 +115,7 @@ void selection_sort() {
             }
         }
         add_process(sorted_len, min_idx);
-
-        int temp = nums[sorted_len];
-        nums[sorted_len] = min_idx;
-        nums[min_idx] = temp;
+        swap(sorted_len, min_idx);
 
         sorted_len++;
     }
@@ -121,11 +126,8 @@ void bubble_sort() {
     while(sorted_len != DESIRED_COUNT) {
         for(int i = 0; i < DESIRED_COUNT - sorted_len - 1; i++) {
             if(nums[i] > nums[i+1]) {
-                add_process(i, i+1);
-
-                int temp = nums[i];
-                nums[i] = nums[i+1];
-                nums[i+1] = temp;
+                add_process(i+1, i);
+                swap(i, i+1);
             }
         }
         sorted_len++;
@@ -138,13 +140,12 @@ void insertion_sort() {
         int j = i - 1;
         while(j >= 0 && nums[j] > element) {
             add_process(j, j+1);
-            int temp = nums[j+1];
-            nums[j+1] = nums[j];
-            nums[j] = temp;
+            swap(j , j+1);
             j--;
         }
     }
 }
+
 int main(void) {
     SetTargetFPS(30);
     SetTraceLogLevel(LOG_WARNING);
@@ -156,7 +157,7 @@ int main(void) {
     generate_nums(nums, DESIRED_COUNT, 10, false);
 
     init_blocks();
-    insertion_sort();
+    bubble_sort();
 
     STARTING_PT.y = 10*BASE_HEIGHT;
     InitWindow(WIDTH * DESIRED_COUNT, STARTING_PT.y, "DSAV");
