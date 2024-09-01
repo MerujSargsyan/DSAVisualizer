@@ -1,12 +1,8 @@
-#ifndef STDLIBS_H
-#define STDLIBS_H
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-
-#endif
+#include <time.h>
 
 #ifndef MY_ALLOC
 #define MY_ALLOC malloc

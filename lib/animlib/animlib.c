@@ -46,6 +46,7 @@ void vector_swap(vector* vect, int i1, int i2) {
 }
 
 void generate_nums(int* arr, int desired_count, int max) {
+    srand(time(0));
     for(int i = 0; i < desired_count; i++) {
         int val = rand() % max + 1;
         arr[i] = val;

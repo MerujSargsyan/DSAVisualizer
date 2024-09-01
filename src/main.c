@@ -2,7 +2,7 @@
 #include <animlib.h>
 #include <stdio.h>
 
-#define DESIRED_COUNT 25
+#define DESIRED_COUNT 30 
 
 bool sorted = false;
 
@@ -38,7 +38,11 @@ void draw(Color c) {
     for(int i = 0; i < blocks.size; i++) {
         block b = *(block *)blocks.arr[i];
         int height = b.val * BASE_HEIGHT;
-        DrawRectangle(curr_x + b.offset, STARTING_PT.y - height, WIDTH, height, c);
+        if(b.offset != 0) {
+            DrawRectangle(curr_x + b.offset, STARTING_PT.y - height, WIDTH, height, RED);
+        } else {
+            DrawRectangle(curr_x + b.offset, STARTING_PT.y - height, WIDTH, height, c);
+        }
         curr_x += WIDTH;
     }
 }
