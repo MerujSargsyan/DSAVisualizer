@@ -6,14 +6,24 @@
 
 bool sorted = false;
 
+/*
+ * defined as:
+ *  int val, offset;
+ */
 vector blocks;
+
+/*
+ * defined as:
+ *  int lefti, righti
+ *  bool done
+ */
 vector processes;
 
 int* nums;
 
 const int WIDTH = 50; 
 const int BASE_HEIGHT = 50; 
-const float BASE_SPEED = 2.0f;
+const float BASE_SPEED = 2.0f; // for animation
 
 Vector2 STARTING_PT = {.x = 0, .y = 0};
 
@@ -47,6 +57,8 @@ void draw(Color c) {
     }
 }
 
+// moves blocks i1 and i2 by a certain factor every frame
+// locks updates their values and positions after finishing
 bool animate(int i1, int i2) {
     int right = i1 > i2 ? i1 : i2;
     int left = i1 > i2 ? i2 : i1;
@@ -80,6 +92,7 @@ void swap(int i1, int i2) {
     nums[i2] = temp;
 }
 
+// when swapping a, b in array, call this to add it to process que 
 void add_process(int left, int right) {
     // write custom processes here
     process* p = MY_ALLOC(sizeof(process));
@@ -89,6 +102,7 @@ void add_process(int left, int right) {
     vector_add(&processes, p);
 }
 
+// animates the process at the top of the list
 void do_processes() {
     if(processes.size == 0) return;
 
@@ -155,7 +169,7 @@ int main(void) {
 
     nums = calloc(DESIRED_COUNT, sizeof(int));
     generate_nums(nums, DESIRED_COUNT, 10, false);
-
+    
     init_blocks();
     bubble_sort();
 
