@@ -8,7 +8,7 @@ run: build/main
 
 
 ## Tools: Currently using raylib for visuals & C for the code
-    may switch to a simpler graphics library since raylib is unnecessary for this project
+Note: may switch to a simpler graphics library since raylib is unnecessary for this project
 
 ### Current issues / TODO:
 <ul>
