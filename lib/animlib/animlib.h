@@ -16,6 +16,10 @@
 #define MY_REALLOC realloc
 #endif
 
+#ifndef MY_CALLOC
+#define MY_CALLOC calloc
+#endif
+
 #define len(A) (int)(sizeof((A)) / sizeof((A)[0]))
 
 typedef struct block {

@@ -167,7 +167,7 @@ int main(void) {
     blocks = init_vector(5);
     processes = init_vector(5);
 
-    nums = calloc(DESIRED_COUNT, sizeof(int));
+    nums = MY_CALLOC(DESIRED_COUNT, sizeof(int));
     generate_nums(nums, DESIRED_COUNT, 10, false);
     
     init_blocks();
