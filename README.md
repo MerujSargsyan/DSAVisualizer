@@ -1,8 +1,10 @@
 # Data Structs & Algorithms Visualizer (DSAV)
 
 ## Clone guide:
-compile: ./compile.sh
+'''shell
+compile: ./compile.sh<br>
 run: build/main
+'''
 
 #### Method: keeps track of a list of blocks which represent array items with an offset from their original positions. When the blocks are swapped, the list of blcoks is updated to match the array. When swapping array elements a, b, we add a process which swaps a and b to the animation queue which is then swapped orderly.
 
