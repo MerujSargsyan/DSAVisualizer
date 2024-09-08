@@ -9,3 +9,4 @@ mkdir -p build
 $CC $CFLAGS -c $ANIMDIR/animlib.c -o $ANIMDIR/animlib.o
 
 $CC $CFLAGS -o $BUILDIR/vector_test vector_test.c -I$ANIMDIR $ANIMDIR/animlib.o
+$CC $CFLAGS -o $BUILDIR/algo_test algo_test.c -I$ANIMDIR $ANIMDIR/animlib.o
