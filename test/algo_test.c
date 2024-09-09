@@ -55,9 +55,12 @@ void merge_sort(int left, int right) {
     if(left < right) {
         int middle = left + (right - left) / 2;
 
+        printf("left: %d, middle:%d\n", left, middle);
         merge_sort(left, middle);
+        printf("middle:%d, right:%d\n", middle, right);
         merge_sort(middle+1, right);
 
+        printf("merging: %d, %d, %d\n", left, middle, right);
         merge(left, middle, right);
     }
 }
