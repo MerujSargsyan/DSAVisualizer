@@ -181,11 +181,11 @@ void merge(int left, int middle, int right) {
     while(i < n1 && j < n2) {
         if(temp_l[i] <= temp_r[j]) {
             nums[k] = temp_l[i];
-            add_process(k, i+left);
+            ((block *)blocks.arr[k])->val = temp_l[i];
             i++;
         } else {
             nums[k] = temp_r[j];
-            add_process(k, j+middle+1);
+            ((block *)blocks.arr[k])->val = temp_r[j];
             j++;
         }
         k++;
@@ -193,14 +193,14 @@ void merge(int left, int middle, int right) {
 
     while(i < n1) {
         nums[k] = temp_l[i];
-        add_process(k, i+left);
+        ((block *)blocks.arr[k])->val = temp_l[i];
         i++;
         k++;
     }
 
     while(j < n2) {
         nums[k] = temp_r[j];
-        add_process(k, j+middle+1);
+        ((block *)blocks.arr[k])->val = temp_r[j];
         j++;
         k++;
     }
