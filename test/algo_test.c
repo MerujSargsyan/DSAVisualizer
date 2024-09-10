@@ -1,5 +1,10 @@
 #include <animlib.h>
 
+typedef struct {
+    int val;
+    int position;
+} merge_entry;
+
 int arr[] = {2, 4, 6, 3, 8, 1, 9};
 
 void print_arr() {
@@ -9,18 +14,18 @@ void print_arr() {
     printf("\n");
 }
 
-void merge(int left, int middle, int right) {
+void merge(int left, int middle, int right, merge_entry* aux) {
     int n1 = middle - left + 1;
     int n2 = right - middle;
 
-    int temp_l[n1];
-    int temp_r[n2];
+    merge_entry temp_l[n1];
+    merge_entry temp_r[n2];
 
     for(int i = 0; i < n1; i++) {
-        temp_l[i] = arr[left + i];
+        temp_l[i] = aux[left + i];
     }
     for(int i = 0; i < n2; i++) {
-        temp_r[i] = arr[middle + 1 + i];
+        temp_r[i] = aux[middle + 1 + i];
     }
 
     // here is where processes probably happen
@@ -28,8 +33,8 @@ void merge(int left, int middle, int right) {
     int j = 0;
     int k = left;
     while(i < n1 && j < n2) {
-        if(temp_l[i] <= temp_r[j]) {
-            arr[k] = temp_l[i];
+        if(temp_l[i].val <= temp_r[j].val) {
+            arr[k] = temp_l[i].val;
             i++;
         } else {
             arr[k] = temp_r[j];

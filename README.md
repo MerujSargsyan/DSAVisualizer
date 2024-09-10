@@ -12,7 +12,8 @@ Note: may switch to a simpler graphics library since raylib is unnecessary for t
 
 ### Current issues / TODO:
 <ul>
-    <li> no current bugs </li>
+    <li> struggling to find correct indicies to swap for merge-sort</li>
+    <li> getting a seg fault with current indicies</li>
 </ul>
 <ul>
     <li> TODO: impelement recursive algorithms </li>
