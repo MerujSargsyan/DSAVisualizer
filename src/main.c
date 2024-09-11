@@ -181,11 +181,9 @@ void merge(int left, int middle, int right) {
     while(i < n1 && j < n2) {
         if(temp_l[i] <= temp_r[j]) {
             nums[k] = temp_l[i];
-            ((block *)blocks.arr[k])->val = temp_l[i];
             i++;
         } else {
             nums[k] = temp_r[j];
-            ((block *)blocks.arr[k])->val = temp_r[j];
             j++;
         }
         k++;
@@ -193,28 +191,34 @@ void merge(int left, int middle, int right) {
 
     while(i < n1) {
         nums[k] = temp_l[i];
-        ((block *)blocks.arr[k])->val = temp_l[i];
         i++;
         k++;
     }
 
     while(j < n2) {
         nums[k] = temp_r[j];
-        ((block *)blocks.arr[k])->val = temp_r[j];
         j++;
         k++;
     }
 }
 
-void merge_sort(int left, int right) {
+void merge_sort_main(int left, int right, int* aux) {
     if(left < right) {
-        int middle = left + (right - left) / 2;
+        int middle = (right + left) / 2;
 
-        merge_sort(left, middle);
-        merge_sort(middle+1, right);
+        merge_sort_main(left, middle, aux);
+        merge_sort_main(middle+1, right, aux);
 
         merge(left, middle, right);
     }
+}
+
+void merge_sort() {
+    int arr[DESIRED_COUNT] = {0};
+    for(int i = 0; i < DESIRED_COUNT; i++) {
+        arr[i] = i;
+    }
+    merge_sort_main(0, DESIRED_COUNT, arr);
 }
 
 int main(void) {
@@ -228,7 +232,7 @@ int main(void) {
     generate_nums(nums, DESIRED_COUNT, 10, false);
     
     init_blocks();
-    merge_sort(0, DESIRED_COUNT);
+    merge_sort();
 
     STARTING_PT.y = 10*BASE_HEIGHT;
     InitWindow(WIDTH * DESIRED_COUNT, STARTING_PT.y, "DSAV");

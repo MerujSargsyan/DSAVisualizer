@@ -9,64 +9,38 @@ void print_arr() {
     printf("\n");
 }
 
-void merge(int left, int middle, int right) {
-    int n1 = middle - left + 1;
-    int n2 = right - middle;
+void swap(int i, int j) {
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
 
-    int temp_l[n1];
-    int temp_r[n2];
-
-    for(int i = 0; i < n1; i++) {
-        temp_l[i] = arr[left + i];
-    }
-    for(int i = 0; i < n2; i++) {
-        temp_r[i] = arr[middle + 1 + i];
-    }
-
-    // here is where processes probably happen
-    int i = 0;
-    int j = 0;
-    int k = left;
-    while(i < n1 && j < n2) {
-        if(temp_l[i]<= temp_r[j]) {
-            arr[k] = temp_l[i];
+void merge(int s1, int s2) {
+    int i = s1;
+    int j = s2;
+    int n = s2 - s1; // get back n
+    while(i - s1 <= n && j - s2 <= n) {
+        if(arr[i] > arr[j]) {
+            swap(i, j);
             i++;
         } else {
-            arr[k] = temp_r[j];
             j++;
-        }
-        k++;
-    }
-
-    while(i < n1) {
-        arr[k] = temp_l[i];
-        i++;
-        k++;
-    }
-
-    while(j < n2) {
-        arr[k] = temp_r[j];
-        j++;
-        k++;
+        } 
     }
 }
 
-void merge_sort(int left, int right) {
-    if(left < right) {
-        int middle = left + (right - left) / 2;
-
-        printf("left: %d, middle:%d\n", left, middle);
-        merge_sort(left, middle);
-        printf("middle:%d, right:%d\n", middle, right);
-        merge_sort(middle+1, right);
-
-        printf("merging: %d, %d, %d\n", left, middle, right);
-        merge(left, middle, right);
+void merge_sort() {
+    int n = 1;
+    while(n < len(arr)) {
+        for(int i = 0; i + n < len(arr); i++) {
+            merge(i, i + n);
+        }
+        n *= 2;
     }
 }
 
 int main(void) {
-    merge_sort(0, 7);
+    merge_sort();
     print_arr();
     return 0;
 }
